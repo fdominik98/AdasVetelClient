@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -13,7 +12,7 @@ namespace AdasVetelServer.model
 
 
 
-        private EntitySet<Reszvetel> reszvetelek = new EntitySet<Reszvetel>();
+        private readonly EntitySet<Reszvetel> reszvetelek = new EntitySet<Reszvetel>();
         [Association(Name = "részvételek", OtherKey = "SzemelyAz")]
         public EntitySet<Reszvetel> Reszvetelek
         {
@@ -36,7 +35,7 @@ namespace AdasVetelServer.model
             Labels.Add("Adóazonosító");
             Labels.Add("Lakcím azonosító");
             Labels.Add("Számlaszám");
-           
+
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
         public int Az { get { return az; } set { az = value; } }
@@ -57,7 +56,7 @@ namespace AdasVetelServer.model
 
 
         [Column(Name = "szül_idő", CanBeNull = true)]
-        public DateTime? SzulIdo { get; set; }= null;
+        public DateTime? SzulIdo { get; set; } = null;
 
 
         [Column(Name = "anyja_családi_neve")]

@@ -67,8 +67,9 @@ namespace AdasVetelClient
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.Name = "ConnectForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Csatlakozás a szerverhez";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConnectForm_FormClosing);
+            this.Load += new System.EventHandler(this.ConnectForm_Load);
             this.ResumeLayout(false);
 
         }

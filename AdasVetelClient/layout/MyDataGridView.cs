@@ -1,20 +1,17 @@
 ﻿using AdasVetelClient.display;
 using System.Drawing;
 using System.Windows.Forms;
-using SimpleTcp;
-using System.Collections.Generic;
-using AdasVetelServer.model;
 
 
 namespace AdasVetelClient.layout
 {
     public class MyDataGridView : DataGridView
     {
-        public string Id { get; set; }  
+        public string Id { get; set; }
 
         public MyDataGridView() : base()
         {
-          
+
             InitializeComponent();
 
             ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
@@ -61,15 +58,15 @@ namespace AdasVetelClient.layout
         {
             if (Id == "szemelyek")
                 new SzemelyekDisplay(SelectedRows[0]).Show();
-            else if(Id == "szervezetek")
+            else if (Id == "szervezetek")
                 new SzervezetekDisplay(SelectedRows[0]).Show();
             else if (Id == "szerzodesek")
                 new SzerzodesekDisplay(SelectedRows[0]).Show();
-            
+
         }
 
         public virtual void FillGrid(byte[] content) { }
         public virtual void AddToGrid(byte[] content) { }
- 
+
     }
 }

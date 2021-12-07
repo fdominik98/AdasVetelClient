@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -15,7 +14,7 @@ namespace AdasVetelServer.model
             Labels.Add("Banki átutalás-e");
             Labels.Add("Részteljesítés");
             Labels.Add("Határidő");
-           
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]

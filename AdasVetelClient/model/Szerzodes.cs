@@ -8,9 +8,9 @@ namespace AdasVetelServer.model
 {
     [Table(Name = "dbo.Szerződés")]
     public class Szerzodes : DbElement, ICheckable<Szerzodes>
-    {         
+    {
 
-        private EntitySet<SzerzodesTargy> szerzodesTargyak = new EntitySet<SzerzodesTargy>();
+        private readonly EntitySet<SzerzodesTargy> szerzodesTargyak = new EntitySet<SzerzodesTargy>();
         [Association(Name = "szerződésTárgyak", OtherKey = "SzerzodesAz")]
         public EntitySet<SzerzodesTargy> Szerzodestargyak
         {
@@ -23,7 +23,7 @@ namespace AdasVetelServer.model
             Labels.Add("Kelt dátum");
             Labels.Add("Típus");
             Labels.Add("Ellenjegyző iroda");
-           
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
@@ -34,7 +34,7 @@ namespace AdasVetelServer.model
 
 
         [Column(Name = "kelt_dátum", CanBeNull = true)]
-        public DateTime? KeltDatum { get; set; }  = null;
+        public DateTime? KeltDatum { get; set; } = null;
         [Column(Name = "típus")]
         public string Tipus { get; set; } = "Ismeretlen";
         [Column(Name = "ellenjegyző_iroda")]
@@ -43,8 +43,8 @@ namespace AdasVetelServer.model
         public string FajlNev { get; set; } = "Ismeretlen";
 
         public bool equals(Szerzodes element)
-        {         
-            
+        {
+
             return KeltDatum.ToString() == element.KeltDatum.ToString() &&
                 Tipus == element.Tipus &&
                  EllenjegyzoIroda == element.EllenjegyzoIroda &&

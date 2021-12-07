@@ -1,30 +1,29 @@
 ﻿
 using AdasVetelClient.layout;
+using AdasVetelClient.tcp;
+using AdasVetelServer.messages;
 using AdasVetelServer.model;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using SimpleTcp;
-using AdasVetelServer.messages;
-using AdasVetelClient.tcp;
 
 namespace AdasVetelClient
 {
 
     public partial class DisplayForm : Form, ClientView
-    {        
+    {
 
         protected List<MyDataGridView> dataGrids = new List<MyDataGridView>();
         protected MyDataGridView currentGrid;
         protected List<DataGridViewRow> currentRows = new List<DataGridViewRow>();
-        protected DataGridViewRow clickedRow;   
+        protected DataGridViewRow clickedRow;
         protected string Route = "";
         protected string Label = "";
         public DisplayForm(DataGridViewRow clickedRow = null)
-        {     
-            
+        {
+
             InitializeComponent();
-            CenterToScreen();            
+            CenterToScreen();
             this.clickedRow = clickedRow;
             currentGrid = null;
 
@@ -39,17 +38,17 @@ namespace AdasVetelClient
             listViewItem9.Tag = "szerzodestargyak";
             listViewItem10.Tag = "reszvetelek";
             createGridViews();
-           
-            
-        }      
+            TcpClientWrapper.Instance.views.Add(this);
+
+
+        }
 
         public DisplayForm()
         {
-            InitializeComponent();      
+            InitializeComponent();
         }
         private void DisplayForm_Load(object sender, EventArgs e)
         {
-            TcpClientWrapper.Instance.views.Add(this);
         }
         virtual protected void createGridViews()
         {
@@ -75,28 +74,28 @@ namespace AdasVetelClient
             dataGrids.Add(new DbHolderGridView<SzerzodesTargy>((string)listViewItem9.Tag));
             dataGrids.Add(new DbHolderGridView<Reszvetel>((string)listViewItem10.Tag));
         }
-       
-       
+
+
         protected void listView1_DoubleClick(object sender, EventArgs e)
         {
-            if (TcpClientWrapper.Instance.isConnected() && listView1.SelectedItems.Count >0)
+            if (TcpClientWrapper.Instance.isConnected() && listView1.SelectedItems.Count > 0)
             {
                 splitContainer2.Panel2.Controls.Remove(currentGrid);
-                Label = (string)listView1.SelectedItems[0].Tag;           
+                Label = (string)listView1.SelectedItems[0].Tag;
                 foreach (var grid in dataGrids)
                 {
                     if (listView1.SelectedItems.Count > 0 && Label == grid.Id)
                     {
-                    
+
                         splitContainer2.Panel2.Controls.Add(grid);
                         currentGrid = grid;
 
                         break;
                     }
-                }            
-                GetRecordMessage msg = new GetRecordMessage($"{Route}/{Label}", new byte[0],false);               
+                }
+                GetRecordMessage msg = new GetRecordMessage($"{Route}/{Label}", new byte[0], 0, "");
                 TcpClientWrapper.Instance.send<GetRecordMessage>(msg);
-            }           
+            }
 
         }
 
@@ -139,11 +138,16 @@ namespace AdasVetelClient
                 }
                 currentGrid.Refresh();
             }
-        }    
+        }
 
         public void connected()
         { }
+        public bool isActive()
+        {
+            return !IsDisposed;
+        }
 
+        public void clientLoggedIn() { }
         public void disconnected()
         { }
         public void handleMessage(MessageBase message, string type)
@@ -156,7 +160,7 @@ namespace AdasVetelClient
                     string baseRoute = grmsg.Route.Substring(0, grmsg.Route.LastIndexOf('/'));
                     if (Route == baseRoute)
                     {
-                        if (grmsg.IsFirst)
+                        if (grmsg.Index == 0)
                         {
                             currentGrid.Rows.Clear();
                             currentRows.Clear();
@@ -168,16 +172,12 @@ namespace AdasVetelClient
                         }
                     }
                 }
-                else if (type == "DataChanged") {
-                    GetRecordMessage msg = new GetRecordMessage($"{Route}/{Label}", new byte[0], false);
+                else if (type == "DataChanged")
+                {
+                    GetRecordMessage msg = new GetRecordMessage($"{Route}/{Label}", new byte[0], 0, "");
                     TcpClientWrapper.Instance.send<GetRecordMessage>(msg);
-                }           
+                }
             });
-        }
-
-        private void DisplayForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            TcpClientWrapper.Instance.views.Remove(this);
         }
     }
 }

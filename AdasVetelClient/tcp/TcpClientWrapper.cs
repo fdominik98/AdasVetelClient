@@ -3,60 +3,75 @@ using SimpleTcp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using System.Text.Json;
+using System.Threading;
 using System.Windows.Forms;
+
 namespace AdasVetelClient.tcp
 {
     public class TcpClientWrapper
     {
-        public static TcpClientWrapper Instance {get;} = new TcpClientWrapper();
+        public static TcpClientWrapper Instance { get; } = new TcpClientWrapper();
         public List<ClientView> views { get; } = new List<ClientView>();
-        private SimpleTcpClient client;
-        private JsonSerializerOptions sOption = new JsonSerializerOptions { WriteIndented = false };
+        private readonly TcpClient client;
+        private readonly JsonSerializerOptions sOption = new JsonSerializerOptions { WriteIndented = false };
         private int currentMessageSize = 0;
         private MemoryStream currentMessageStream = new MemoryStream();
         private BinaryReader br;
-        long readPos = 0;      
-        private TcpClientWrapper() {
-            string ipPort = File.ReadAllText(Application.StartupPath + "\\serverConfig\\serverIp.conf");
-            client = new SimpleTcpClient(ipPort);
+        long readPos = 0;
+        private TcpClientWrapper()
+        {
+            string ipPort = File.ReadAllText(Application.StartupPath + "\\config\\serverIp.conf");
+            client = new TcpClient(ipPort);
 
             br = new BinaryReader(currentMessageStream);
-          
+
             client.Events.Connected += EventServerConnected;
             client.Events.Disconnected += EventServerDisconnected;
             client.Events.DataReceived += EventDataReceived;
         }
         public void send<T>(MessageBase message) where T : MessageBase
         {
+            Console.WriteLine(client.SessionId);
+            message.SessionId = client.SessionId;
             using (var outputStream = new MemoryStream())
             {
                 using (var bw = new BinaryWriter(outputStream))
                 {
                     byte[] data = JsonSerializer.SerializeToUtf8Bytes((T)message, sOption);
-                    outputStream.Capacity = data.Length + 4;                
-                    bw.Write(data.Length);                   
-                    bw.Write(data);                   
+                    outputStream.Capacity = data.Length + 4;
+                    bw.Write(data.Length);
+                    bw.Write(data);
                     outputStream.Position = 0;
-                    client.Send(outputStream.Length, outputStream);     
+                    client.Send(outputStream.Length, outputStream);
                     Console.WriteLine($"{outputStream.Length} bytes sent to server.");
                 }
             }
         }
-        public void connectToServer() {
-            if (!client.IsConnected)
+        public void connectToServer()
+        {
+            new Thread(doConnect).Start();
+        }
+        public void stopConnecting()
+        {
+            client.Stopped = true;
+        }
+        public void doConnect()
+        {
+            while (!client.IsConnected && !client.Stopped)
             {
+                Thread.Sleep(100);
                 try
                 {
                     client.Connect();
-
                 }
                 catch (Exception ex)
                 {
-                    client.Dispose();                   
+                    client.Dispose();
                 }
-            } 
-        }   
+            }
+        }
         private void EventDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine($"{e.Data.Length} bytes received from server");
@@ -68,9 +83,9 @@ namespace AdasVetelClient.tcp
             currentMessageStream.Write(data, 0, data.Length);
             currentMessageStream.Position = readPos;
             if (currentMessageSize == 0)
-            {  
-                currentMessageSize = br.ReadInt32();   
-                if (currentMessageStream.Length -4< currentMessageSize)
+            {
+                currentMessageSize = br.ReadInt32();
+                if (currentMessageStream.Length - 4 < currentMessageSize)
                 {
                     readPos = currentMessageStream.Position;
                     currentMessageStream.Seek(0, SeekOrigin.End);
@@ -78,8 +93,12 @@ namespace AdasVetelClient.tcp
                 }
             }
             byte[] dataToHandle = br.ReadBytes(currentMessageSize);
-            foreach (ClientView view in views)
-                handleData(dataToHandle, view);            
+            for (int i = 0; i < views.Count; i++)
+            {
+                if (views[i].isActive())
+                    handleData(dataToHandle, views[i]);
+            }
+            views.RemoveAll(v => !v.isActive());
             if (currentMessageStream.Position < currentMessageStream.Length)
             {
                 byte[] remaining = br.ReadBytes((int)(currentMessageStream.Length - currentMessageStream.Position));
@@ -91,16 +110,18 @@ namespace AdasVetelClient.tcp
                 resetStream();
             }
         }
-        
-        private void resetStream() {
+
+        private void resetStream()
+        {
             currentMessageStream.Close();
             br.Close();
             currentMessageStream = new MemoryStream();
             br = new BinaryReader(currentMessageStream);
-            readPos = 0;         
+            readPos = 0;
             currentMessageSize = 0;
         }
-        private void handleData(byte[] data, ClientView view) {
+        private void handleData(byte[] data, ClientView view)
+        {
             try
             {
                 MessageBase msg = JsonSerializer.Deserialize<MessageBase>(new ReadOnlySpan<byte>(data));
@@ -130,29 +151,68 @@ namespace AdasVetelClient.tcp
                     DatabaseChangedMessage dbcmsg = JsonSerializer.Deserialize<DatabaseChangedMessage>(new ReadOnlySpan<byte>(data));
                     view.handleMessage(dbcmsg, msg.Type);
                 }
+                if (msg.Type == "Login")
+                {
+                    LoginMessage loginMessage = JsonSerializer.Deserialize<LoginMessage>(new ReadOnlySpan<byte>(data));
+                    view.handleMessage(loginMessage, msg.Type);
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);                
-                ErrorMessage ermsg = new ErrorMessage(ex.StackTrace);
+                Console.WriteLine(ex.StackTrace);
+                ErrorMessage ermsg = new ErrorMessage(ex.StackTrace, "");
                 view.handleMessage(ermsg, "ErrorMessage");
             }
         }
 
         private void EventServerDisconnected(object sender, ClientDisconnectedEventArgs e)
-        {           
-            foreach(ClientView view in views)
-                 view.disconnected();         
+        {
+            client.reset();
+            for (int i = 0; i < views.Count; i++)
+            {
+                if (views[i].isActive())
+                    views[i].disconnected();
+            }
+            views.RemoveAll(v => !v.isActive());
         }
 
         private void EventServerConnected(object sender, ClientConnectedEventArgs e)
         {
-            foreach (ClientView view in views)
-                view.connected(); 
-            
+            for (int i = 0; i < views.Count; i++)
+            {
+                if (views[i].isActive())
+                    views[i].connected();
+            }
+            views.RemoveAll(v => !v.isActive());
         }
-        public bool isConnected() {
+
+        public bool isConnected()
+        {
             return client.IsConnected;
+        }
+        public bool isLoggedIn()
+        {
+            return client.Auth != TcpClient.Authority.NONE;
+        }
+        public void logInClient(LoginMessage message)
+        {
+            client.Auth = (TcpClient.Authority)message.Authority;
+            client.Username = message.Username;
+            client.SessionId = message.SessionId;
+            for (int i = 0; i < views.Count; i++)
+            {
+                if (views[i].isActive())
+                    views[i].clientLoggedIn();
+            }
+            views.RemoveAll(v => !v.isActive());
+        }
+        public string getClientUsername()
+        {
+            return client.Username;
+        }
+        public TcpClient.Authority getClientAuth()
+        {
+            return client.Auth;
         }
 
     }

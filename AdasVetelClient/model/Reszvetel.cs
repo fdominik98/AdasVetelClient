@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -17,8 +16,8 @@ namespace AdasVetelServer.model
             Labels.Add("Személy az");
             Labels.Add("Szervezet az");
             Labels.Add("Résztvevő Típus");
-            Labels.Add("Szerep");           
-          
+            Labels.Add("Szerep");
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
@@ -33,7 +32,7 @@ namespace AdasVetelServer.model
         public string ResztvevoKod { get; set; } = "Ismeretlen";
 
         [Column(Name = "szerep")]
-        public string Szerep { get; set; } = "Ismeretlen";    
+        public string Szerep { get; set; } = "Ismeretlen";
 
 
 

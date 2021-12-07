@@ -131,8 +131,6 @@
             this.MinimumSize = new System.Drawing.Size(996, 515);
             this.Name = "DisplayForm";
             this.Text = "Szerződés adatok";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DisplayForm_FormClosing);
-            this.Load += new System.EventHandler(this.DisplayForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

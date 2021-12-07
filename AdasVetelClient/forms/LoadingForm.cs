@@ -1,9 +1,4 @@
-﻿using AdasVetelServer.messages;
-using SimpleTcp;
-using System;
-using System.Linq;
-using System.Text.Json;
-using System.Windows.Forms;
+﻿using System;
 
 namespace AdasVetelClient
 {
@@ -12,12 +7,13 @@ namespace AdasVetelClient
         private int setCount;
         public LoadingForm(int fileCount)
         {
-            InitializeComponent();          
-            setCount = fileCount * 2;  
-            progressBar1.Step = progressBar1.Maximum / (fileCount * 2);           
+            InitializeComponent();
+            setCount = fileCount * 2;
+            progressBar1.Step = progressBar1.Maximum / (fileCount * 2);
         }
-        
-        public void setLabelText(string text) {
+
+        public void setLabelText(string text)
+        {
             progressLabel.Text = text;
         }
 
@@ -25,14 +21,14 @@ namespace AdasVetelClient
         {
             setCount--;
             progressBar1.PerformStep();
-            progressLabel.Text = text+"...";
+            progressLabel.Text = text + "...";
             progressLabel.Font = new System.Drawing.Font(progressLabel.Font.FontFamily, 9);
             if (setCount <= 0)
             {
                 progressBar1.Value = progressBar1.Maximum;
                 progressLabel.Text = "Beolvasás kész!";
                 closeBtn.Text = "Ok";
-            }            
+            }
         }
         public void stepBack()
         {
@@ -41,7 +37,7 @@ namespace AdasVetelClient
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
-        {          
+        {
             Close();
         }
     }

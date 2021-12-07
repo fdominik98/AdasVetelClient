@@ -1,16 +1,7 @@
 ﻿
 using AdasVetelClient.layout;
 using AdasVetelServer.model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SimpleTcp;
 
 
 namespace AdasVetelClient.display
@@ -22,7 +13,7 @@ namespace AdasVetelClient.display
         {
             Szerzodes sz = (Szerzodes)clickedRow.Tag;
             InitializeComponent();
-            Text = $"{sz.Az} - {sz.Tipus} : {sz.KeltDatum}";           
+            Text = $"{sz.Az} - {sz.Tipus} : {sz.KeltDatum}";
             Route = $"{Route}/szerzodesek/{sz.Az}";
         }
         protected override void createGridViews()
@@ -36,7 +27,7 @@ namespace AdasVetelClient.display
             listViewItem7,
             listViewItem8,
             listViewItem9
-            });      
+            });
             dataGrids.Add(new DbHolderGridView<Szemely>((string)listViewItem3.Tag));
             dataGrids.Add(new DbHolderGridView<Szervezet>((string)listViewItem4.Tag));
             dataGrids.Add(new DbHolderGridView<Reszvetel>((string)listViewItem10.Tag));
@@ -46,7 +37,7 @@ namespace AdasVetelClient.display
             dataGrids.Add(new DbHolderGridView<Teljesites>((string)listViewItem8.Tag));
             dataGrids.Add(new DbHolderGridView<SzerzodesTargy>((string)listViewItem9.Tag));
         }
-        
+
 
     }
 }
