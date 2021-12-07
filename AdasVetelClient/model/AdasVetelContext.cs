@@ -1,6 +1,5 @@
 ﻿namespace AdasVetelServer.model
 {
-    using System.Collections.Generic;
     using System.Data.Linq;
 
     /// <summary>
@@ -8,7 +7,7 @@
     /// </summary>
     public partial class AdasVetelContext : DataContext
     {
-       
+
         /// <summary>
         /// Defines the Cimek.
         /// </summary>
@@ -65,8 +64,8 @@
         /// <param name="connection">The connection<see cref="string"/>.</param>
         public AdasVetelContext(string connection) : base(connection)
         {
-          
-        }      
+
+        }
 
     }
 }

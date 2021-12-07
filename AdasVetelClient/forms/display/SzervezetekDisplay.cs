@@ -2,7 +2,6 @@
 using AdasVetelClient.layout;
 using AdasVetelServer.model;
 using System.Windows.Forms;
-using SimpleTcp;
 
 namespace AdasVetelClient
 {
@@ -27,6 +26,6 @@ namespace AdasVetelClient
             dataGrids.Add(new DbHolderGridView<Szerzodes>((string)listViewItem2.Tag));
             dataGrids.Add(new DbHolderGridView<Reszvetel>((string)listViewItem10.Tag));
         }
-       
+
     }
 }

@@ -22,7 +22,7 @@ namespace AdasVetelServer.model
             Labels.Add("Első Forgalomba Helyezés");
             Labels.Add("Kilóméterszám");
             Labels.Add("Használtság");
-           
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
@@ -62,7 +62,7 @@ namespace AdasVetelServer.model
             return Rendszam == element.Rendszam &&
               Alvazszam == element.Alvazszam &&
               Motorszam == element.Motorszam &&
-                 Tipus == element.Tipus &&              
+                 Tipus == element.Tipus &&
                ExtraFelsz == element.ExtraFelsz &&
                 TorzskonyvSzam == element.TorzskonyvSzam &&
                 ElsoForgalombaHely == element.ElsoForgalombaHely &&

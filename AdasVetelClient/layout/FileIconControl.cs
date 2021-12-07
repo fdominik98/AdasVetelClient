@@ -2,14 +2,9 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using IronOcr;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AdasVetelClient
@@ -19,16 +14,13 @@ namespace AdasVetelClient
     {
         private GetText getTextDelegate;
         private IronTesseract ocr = null;
-        private ControlCollection parent;
-        public LoadingForm loadingForm { get; set; }       
+        private readonly ControlCollection parent;
         public IronTesseract Ocr
         {
             get
             {
                 if (ocr == null)
                 {
-                    loadingForm.setProgress("Opening OCR");
-                    loadingForm.stepBack();
                     ocr = new IronTesseract();
                     // Configure for speed.  35% faster and only 0.2% loss of accuracy
                     ocr.Configuration.BlackListCharacters = "~`$#^*_}{][|\\@¢©«»°±·×‑–—‘’“”•…′″€™←↑→↓↔⇄⇒∅∼≅≈≠≤≥≪≫⌁⌘○◔◑◕●☐☑☒☕☮☯☺♡⚓✓✰";
@@ -44,7 +36,7 @@ namespace AdasVetelClient
         }
         public string FileName { get; set; }
         public string SafeFileName { get; set; }
-       
+
 
         public FileIconControl(string filename, string safeFilename, ControlCollection parent)
         {
@@ -55,11 +47,11 @@ namespace AdasVetelClient
             fileLabel.Text = safeFilename;
             setGetTextDelegate();
             fileButton.BackgroundImage = new Bitmap(fileButton.BackgroundImage, new Size(fileButton.Width, fileButton.Height));
-        }         
-    
+        }
+
         public string getText()
         {
-           return getTextDelegate(FileName);
+            return getTextDelegate(FileName);
         }
         private void setGetTextDelegate()
         {
@@ -88,7 +80,6 @@ namespace AdasVetelClient
 
         private string readPdf(string filename)
         {
-            loadingForm.setProgress("Reading " + SafeFileName);
             using (var Input = new OcrInput(filename))
             {
                 var Result = Ocr.Read(Input);
@@ -98,20 +89,17 @@ namespace AdasVetelClient
         }
         private string readImage(string name)
         {
-            loadingForm.setProgress("Reading " + SafeFileName);
             using (var Input = new OcrInput(name))
             {
                 var Result = Ocr.Read(Input);
                 return Result.Text;
-            }            
-        
+            }
+
         }
 
 
         private string readWordDoc(string filename)
         {
-            loadingForm.setProgress("Opening " + SafeFileName);
-
             try
             {
                 using (WordprocessingDocument wordDocument =
@@ -129,7 +117,7 @@ namespace AdasVetelClient
                 }
             }
             catch (Exception)
-            {                
+            {
                 string message = $"A {SafeFileName} nevű fájl meg van nyitva egy másik program álltal, így a beolvasás nem hajtható végre!";
                 // Show message box
                 MessageBox.Show(message);
@@ -139,7 +127,6 @@ namespace AdasVetelClient
         }
         private string readTxt(string filename)
         {
-            loadingForm.setProgress("Reading " + SafeFileName);
             string data = "";
             var lines = File.ReadAllLines(filename, Encoding.UTF8);
             foreach (var line in lines)

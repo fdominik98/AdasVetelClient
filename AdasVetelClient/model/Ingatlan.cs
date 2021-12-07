@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -26,7 +24,7 @@ namespace AdasVetelServer.model
             Labels.Add("Típus");
             Labels.Add("Közös tulajdoni hányad");
             Labels.Add("Cím az");
-          
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]

@@ -1,51 +1,45 @@
-﻿using AdasVetelServer.messages;
-using AdasVetelClient.tcp;
+﻿using AdasVetelClient.tcp;
+using AdasVetelServer.messages;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace AdasVetelClient
 {
-    public partial class ConnectForm : MaterialSkin.Controls.MaterialForm
+    public partial class ConnectForm : MaterialSkin.Controls.MaterialForm, ClientView
     {
-
-        bool stopped = false;
         public ConnectForm()
         {
             InitializeComponent();
-            CenterToScreen();
-            new Thread(doConnect).Start();
-        
-           
         }
-        public void doConnect() {
-            while (!TcpClientWrapper.Instance.isConnected() &&! stopped)
-            TcpClientWrapper.Instance.connectToServer();
-            if (stopped)
-                return;
-            Invoke((MethodInvoker)delegate
-            {
-                stopped = true;
-                Close();
-            });
+        public void connected()
+        {
+            DialogResult = DialogResult.OK;
         }
-       
+
+        public void disconnected()
+        {
+
+        }
+        public void clientLoggedIn() { }
+
+        public void handleMessage(MessageBase message, string type)
+        {
+        }
+
+        public bool isActive()
+        {
+            return !IsDisposed;
+        }
+
         private void closeBtn_Click(object sender, EventArgs e)
         {
-            stopped = true;
-            Close();
-        }       
-        private void ConnectForm_FormClosing(object sender, FormClosingEventArgs e)
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void ConnectForm_Load(object sender, EventArgs e)
         {
-            stopped = true;
-            DialogResult = DialogResult.OK;
+            TcpClientWrapper.Instance.views.Add(this);
         }
     }
 }

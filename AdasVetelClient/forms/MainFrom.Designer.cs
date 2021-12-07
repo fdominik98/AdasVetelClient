@@ -38,6 +38,8 @@
             this.pdfLoadButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.fileFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
+            this.progressLabel = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
             this.connectionSignal = new System.Windows.Forms.PictureBox();
             this.connectButton = new System.Windows.Forms.Button();
@@ -45,6 +47,7 @@
             this.viewContracts = new MaterialSkin.Controls.MaterialRaisedButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.limitLabel = new System.Windows.Forms.Label();
+            this.userNameLabel = new MaterialSkin.Controls.MaterialLabel();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -65,11 +68,11 @@
             this.readContract.FlatAppearance.BorderSize = 2;
             this.readContract.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.readContract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.readContract.Location = new System.Drawing.Point(14, 349);
+            this.readContract.Location = new System.Drawing.Point(18, 349);
             this.readContract.MouseState = MaterialSkin.MouseState.HOVER;
             this.readContract.Name = "readContract";
             this.readContract.Primary = true;
-            this.readContract.Size = new System.Drawing.Size(190, 60);
+            this.readContract.Size = new System.Drawing.Size(204, 60);
             this.readContract.TabIndex = 12;
             this.readContract.Text = "Szerződés(ek) beolvasása";
             this.readContract.UseVisualStyleBackColor = false;
@@ -82,7 +85,7 @@
             this.groupBox2.Controls.Add(this.imageLoadButton);
             this.groupBox2.Controls.Add(this.txtLoadButton);
             this.groupBox2.Controls.Add(this.pdfLoadButton);
-            this.groupBox2.Location = new System.Drawing.Point(82, 76);
+            this.groupBox2.Location = new System.Drawing.Point(126, 70);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(240, 229);
             this.groupBox2.TabIndex = 18;
@@ -161,13 +164,15 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.progressLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.progressBar);
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Panel2.Controls.Add(this.clearListBtn);
             this.splitContainer1.Panel2.Controls.Add(this.readContract);
             this.splitContainer1.Panel2.Controls.Add(this.viewContracts);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(853, 421);
-            this.splitContainer1.SplitterDistance = 461;
+            this.splitContainer1.Size = new System.Drawing.Size(950, 421);
+            this.splitContainer1.SplitterDistance = 489;
             this.splitContainer1.TabIndex = 19;
             // 
             // fileFlowLayout
@@ -178,15 +183,34 @@
             this.fileFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fileFlowLayout.Location = new System.Drawing.Point(0, 0);
             this.fileFlowLayout.Name = "fileFlowLayout";
-            this.fileFlowLayout.Size = new System.Drawing.Size(461, 421);
+            this.fileFlowLayout.Size = new System.Drawing.Size(489, 421);
             this.fileFlowLayout.TabIndex = 0;
+            // 
+            // progressLabel
+            // 
+            this.progressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressLabel.AutoSize = true;
+            this.progressLabel.Location = new System.Drawing.Point(15, 304);
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.Size = new System.Drawing.Size(0, 17);
+            this.progressLabel.TabIndex = 24;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(18, 327);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(424, 16);
+            this.progressBar.TabIndex = 23;
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.connectionSignal);
             this.panel1.Controls.Add(this.connectButton);
-            this.panel1.Location = new System.Drawing.Point(292, 9);
+            this.panel1.Location = new System.Drawing.Point(361, 9);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(84, 55);
             this.panel1.TabIndex = 22;
@@ -237,11 +261,11 @@
             this.viewContracts.FlatAppearance.BorderSize = 2;
             this.viewContracts.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.viewContracts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.viewContracts.Location = new System.Drawing.Point(210, 349);
+            this.viewContracts.Location = new System.Drawing.Point(248, 349);
             this.viewContracts.MouseState = MaterialSkin.MouseState.HOVER;
             this.viewContracts.Name = "viewContracts";
             this.viewContracts.Primary = true;
-            this.viewContracts.Size = new System.Drawing.Size(166, 60);
+            this.viewContracts.Size = new System.Drawing.Size(194, 60);
             this.viewContracts.TabIndex = 13;
             this.viewContracts.Text = "Szerződések megtekintése";
             this.viewContracts.UseVisualStyleBackColor = false;
@@ -263,16 +287,30 @@
             this.limitLabel.Text = "Maximum 10 elem tölthető be egyszerre";
             this.limitLabel.Visible = false;
             // 
-            // AdasVetelClient
+            // userNameLabel
+            // 
+            this.userNameLabel.AutoSize = true;
+            this.userNameLabel.BackColor = System.Drawing.SystemColors.Desktop;
+            this.userNameLabel.Depth = 0;
+            this.userNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.userNameLabel.ForeColor = System.Drawing.Color.White;
+            this.userNameLabel.Location = new System.Drawing.Point(714, 31);
+            this.userNameLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.userNameLabel.Name = "userNameLabel";
+            this.userNameLabel.Size = new System.Drawing.Size(0, 24);
+            this.userNameLabel.TabIndex = 20;
+            // 
+            // AdasVetel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 486);
+            this.ClientSize = new System.Drawing.Size(950, 486);
+            this.Controls.Add(this.userNameLabel);
             this.Controls.Add(this.limitLabel);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(853, 486);
-            this.Name = "AdasVetelClient";
+            this.Name = "AdasVetel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Adás Vétel";
             this.Load += new System.EventHandler(this.AdasVetel_Load);
@@ -305,6 +343,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label limitLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label progressLabel;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private MaterialSkin.Controls.MaterialLabel userNameLabel;
     }
 }
 

@@ -11,7 +11,7 @@ namespace AdasVetelServer.model
     public class Cim : DbElement, ICheckable<Cim>
     {
 
-        private EntitySet<Szemely> szemelyek = new EntitySet<Szemely>();
+        private readonly EntitySet<Szemely> szemelyek = new EntitySet<Szemely>();
         [Association(Name = "személyek", OtherKey = "LakcimAz")]
         public EntitySet<Szemely> Szemelyek
         {
@@ -19,7 +19,7 @@ namespace AdasVetelServer.model
             set { szemelyek.Assign(value); }
         }
 
-        private EntitySet<Szervezet> szervezetek = new EntitySet<Szervezet>();
+        private readonly EntitySet<Szervezet> szervezetek = new EntitySet<Szervezet>();
         [Association(Name = "szervezetek", OtherKey = "SzekhelyAz")]
         public EntitySet<Szervezet> Szervezetek
         {
@@ -27,7 +27,7 @@ namespace AdasVetelServer.model
             set { szervezetek.Assign(value); }
         }
 
-        private EntitySet<Ingatlan> ingatlanok = new EntitySet<Ingatlan>();
+        private readonly EntitySet<Ingatlan> ingatlanok = new EntitySet<Ingatlan>();
         [Association(Name = "ingatlanok", OtherKey = "CimAz")]
         public EntitySet<Ingatlan> Ingatlanok
         {
@@ -43,7 +43,7 @@ namespace AdasVetelServer.model
             Labels.Add("Utca");
             Labels.Add("Házszám");
             Labels.Add("Emelet");
-          
+
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
         public int Az { get { return az; } set { az = value; } }
@@ -66,10 +66,10 @@ namespace AdasVetelServer.model
         public int Emelet { get; set; } = -1;
 
         public bool equals(Cim element)
-        {        
+        {
 
             return Orszag == element.Orszag &&
-               (Iranyitoszam == element.Iranyitoszam ||  Varos == element.Varos) &&
+               (Iranyitoszam == element.Iranyitoszam || Varos == element.Varos) &&
                Utca == element.Utca &&
               Hazszam == element.Hazszam &&
                 Emelet == element.Emelet;

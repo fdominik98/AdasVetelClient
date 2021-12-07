@@ -69,6 +69,12 @@
     <Compile Include="forms\display\SzerzodesekDisplay.Designer.cs">
       <DependentUpon>SzerzodesekDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="layout\FileIconControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,12 +99,13 @@
     <Compile Include="forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="messages\DatabaseChangedMessage.cs" />
-    <Compile Include="messages\ErrorMessage.cs" />
-    <Compile Include="messages\GetRecordMessage.cs" />
-    <Compile Include="messages\LoadMessage.cs" />
-    <Compile Include="messages\MessageBase.cs" />
-    <Compile Include="messages\ProgressInfoMessage.cs" />
+    <Compile Include="tcp\messages\DatabaseChangedMessage.cs" />
+    <Compile Include="tcp\messages\ErrorMessage.cs" />
+    <Compile Include="tcp\messages\GetRecordMessage.cs" />
+    <Compile Include="tcp\messages\LoginMessage.cs" />
+    <Compile Include="tcp\messages\LoadMessage.cs" />
+    <Compile Include="tcp\messages\MessageBase.cs" />
+    <Compile Include="tcp\messages\ProgressInfoMessage.cs" />
     <Compile Include="model\AdasVetelContext.cs" />
     <Compile Include="model\Cim.cs" />
     <Compile Include="model\DbElement.cs" />
@@ -128,6 +135,7 @@
     <Compile Include="forms\display\SzervezetekDisplay.Designer.cs">
       <DependentUpon>SzervezetekDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="tcp\TcpClient.cs" />
     <Compile Include="tcp\TcpClientWrapper.cs" />
     <Compile Include="tcp\ClientView.cs" />
     <EmbeddedResource Include="forms\ConnectForm.resx">
@@ -144,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\display\SzerzodesekDisplay.resx">
       <DependentUpon>SzerzodesekDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="layout\FileIconControl.resx">
       <DependentUpon>FileIconControl.cs</DependentUpon>
@@ -171,6 +182,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <Content Include="config\docPrevPath.loc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="config\serverIp.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

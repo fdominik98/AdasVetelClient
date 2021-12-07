@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -21,7 +20,7 @@ namespace AdasVetelServer.model
             Labels.Add("Szerződés az");
             Labels.Add("Eladó tulajdon arány");
             Labels.Add("Teljesítés az");
-           
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
@@ -79,7 +78,7 @@ namespace AdasVetelServer.model
                 EladoTulajdonArany == element.EladoTulajdonArany &&
                  TargyKod == element.TargyKod &&
                 TeljesitesAz == element.TeljesitesAz;
-               
+
         }
 
         public override List<string> getData()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Text.RegularExpressions;
 
 namespace AdasVetelServer.model
 {
@@ -11,7 +10,7 @@ namespace AdasVetelServer.model
     {
         private EntityRef<Cim> szekhely = new EntityRef<Cim>();
 
-        private EntitySet<Reszvetel> reszvetelek = new EntitySet<Reszvetel>();
+        private readonly EntitySet<Reszvetel> reszvetelek = new EntitySet<Reszvetel>();
         [Association(Name = "részvételek", OtherKey = "SzervezetAz")]
         public EntitySet<Reszvetel> Reszvetelek
         {
@@ -30,7 +29,7 @@ namespace AdasVetelServer.model
             Labels.Add("Statisztikai azonosító");
             Labels.Add("Adószám");
             Labels.Add("Számlaszám");
-           
+
 
         }
         [Column(IsPrimaryKey = true, Name = "az", IsDbGenerated = true, DbType = "Int NOT NULL IDENTITY")]
